@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: D:\DEVOPS\FINAL PROJECT\text-generation-webui\kompose.exe convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: text-generation-webui
+  name: text-generation-webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: text-generation-webui
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: D:\DEVOPS\FINAL PROJECT\text-generation-webui\kompose.exe convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: text-generation-webui
+    spec:
+      containers:
+        - env:
+            - name: CLI_ARGS
+              valueFrom:
+                configMapKeyRef:
+                  key: CLI_ARGS
+                  name: env
+            - name: CONTAINER_API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: CONTAINER_API_PORT
+                  name: env
+            - name: CONTAINER_API_STREAM_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: CONTAINER_API_STREAM_PORT
+                  name: env
+            - name: CONTAINER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: CONTAINER_PORT
+                  name: env
+            - name: HOST_API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST_API_PORT
+                  name: env
+            - name: HOST_API_STREAM_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST_API_STREAM_PORT
+                  name: env
+            - name: HOST_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: HOST_PORT
+                  name: env
+            - name: TORCH_CUDA_ARCH_LIST
+              valueFrom:
+                configMapKeyRef:
+                  key: TORCH_CUDA_ARCH_LIST
+                  name: env
+            - name: WEBUI_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  key: WEBUI_VERSION
+                  name: env
+          image: text-generation-webui
+          name: text-generation-webui
+          ports:
+            - containerPort: 7860
+            - containerPort: 5000
+            - containerPort: 5005
+          resources: {}
+          stdin: true
+          tty: true
+          volumeMounts:
+            - mountPath: /app/characters
+              name: text-generation-webui-claim0
+            - mountPath: /app/extensions
+              name: text-generation-webui-claim1
+            - mountPath: /app/loras
+              name: text-generation-webui-claim2
+            - mountPath: /app/models
+              name: text-generation-webui-claim3
+            - mountPath: /app/presets
+              name: text-generation-webui-claim4
+            - mountPath: /app/prompts
+              name: text-generation-webui-claim5
+            - mountPath: /app/softprompts
+              name: text-generation-webui-claim6
+            - mountPath: /app/training
+              name: text-generation-webui-claim7
+            - mountPath: /etc/cloudflared
+              name: text-generation-webui-claim8
+      restartPolicy: Always
+      volumes:
+        - name: text-generation-webui-claim0
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim0
+        - name: text-generation-webui-claim1
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim1
+        - name: text-generation-webui-claim2
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim2
+        - name: text-generation-webui-claim3
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim3
+        - name: text-generation-webui-claim4
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim4
+        - name: text-generation-webui-claim5
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim5
+        - name: text-generation-webui-claim6
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim6
+        - name: text-generation-webui-claim7
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim7
+        - name: text-generation-webui-claim8
+          persistentVolumeClaim:
+            claimName: text-generation-webui-claim8
+status: {}
