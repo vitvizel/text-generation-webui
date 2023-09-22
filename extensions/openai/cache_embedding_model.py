@@ -3,6 +3,10 @@
 # Dockerfile:
 # ENV OPENEDAI_EMBEDDING_MODEL=all-mpnet-base-v2 # Optional
 # RUN python3 cache_embedded_model.py
-import os, sentence_transformers
-st_model = os.environ["OPENEDAI_EMBEDDING_MODEL"] if "OPENEDAI_EMBEDDING_MODEL" in os.environ else "all-mpnet-base-v2"
+import os
+
+import sentence_transformers
+from extensions.openai.script import params
+
+st_model = os.environ.get("OPENEDAI_EMBEDDING_MODEL", params.get('embedding_model', 'all-mpnet-base-v2'))
 model = sentence_transformers.SentenceTransformer(st_model)
